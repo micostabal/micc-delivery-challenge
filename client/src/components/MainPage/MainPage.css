@@ -1,0 +1,33 @@
+
+
+.principal-container {
+  width: 65%;
+  display: flex;
+  flex-direction: column;
+}
+
+.element-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  padding: 15px;
+}
+
+.element-row-contaner {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  margin: 0px;
+}
+
+.element-column-contaner {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  margin: 0px;
+}
+
+.text-input-container {
+  width: 20em;
+  margin-bottom: 10px;
+}
