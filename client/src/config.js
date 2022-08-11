@@ -1,5 +1,5 @@
 
-const BASE_URL = "https://micc-delivery-challenge-server.herokuapp.com";
+const BASE_URL = "http://localhost:3001";
 
 const config = {
   endpoints: {
