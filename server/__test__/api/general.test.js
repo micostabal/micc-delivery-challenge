@@ -1,4 +1,5 @@
 const axios = require("axios");
+const moment = require("moment");
 
 RIGHT_ADDRESS_ONE = "bludenz 4911, lo barnechea";
 RIGHT_ADDRESS_TWO = "monseñor eyzaguirre 612, ñuñoa";
@@ -71,17 +72,22 @@ describe('api payloads', function() {
         destination: RIGHT_ADDRESS_TWO
       }
     });
-
+    
     const response = await axios({
       url: "http://localhost:3001/entries",
       method: "GET"
     });
     const {data} = response;
     expect(data.length).toBeGreaterThanOrEqual(1);
-    const lastAdded = data.pop();
+    const lastAdded = data.shift();
     expect(lastAdded.origin).toBe(RIGHT_ADDRESS_ONE);
     expect(lastAdded.destination).toBe(RIGHT_ADDRESS_TWO);
     expect(lastAdded.distance).toBe(RIGHT_DISTANCE);
+    expect(lastAdded.createdAt).toBeDefined();
+    console.log(lastAdded);
+    expect(
+      moment().format('YYYY-MM-DD hh:mm:ss') > lastAdded.createdAt
+    ).toBe(true);
   });
 
 });

@@ -46,8 +46,8 @@ class Controller {
     return payload;
   };
   
-  handleGetEntriesRequest = () => {
-    return this.core.db.getSearchRequests();
+  handleGetEntriesRequest = async () => {
+    return await this.core.db.getSearchRequests();
   }
 }
 

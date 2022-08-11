@@ -1,34 +1,61 @@
 const { v4: uuidv4 } = require('uuid');
+const { Pool } = require('pg');
 const moment = require('moment');
+const bodyParser = require('body-parser');
+const {queries} = require("./utils");
 const ENTRY_SIZE_LIMIT = 200;
 
 class DataBase {
   constructor (max_entries=ENTRY_SIZE_LIMIT) {
-    this.max_entries
-    this.entries = [];
+    this.pool = new Pool({
+      connectionString: process.env.DATABASE_URL,
+      ssl: {
+        rejectUnauthorized: false
+      }
+    });
+    this.pool.connect();
+    this.pool.query(queries.DELETE_ALL_RECORDS);
   }
   
-  postSearchRequest = ({origin, destination, distance}) => {
-    if (!origin || !destination || !distance) {
-      return {success: false, message: "At least one parameter is undefined"};
-    }
-    const id = uuidv4();
-    var createdAt = moment().format('YYYY-MM-DD hh:mm:ss');
-    if (this.entries.length >= this.max_entries) {
-      this.entries.shift();
-    }
-    this.entries.unshift(
-      {id,createdAt,origin,destination,distance}
-    );
-    return {success:true, message: "Ok"}
+  createTable = async () => {
+    await this.pool.query(queries.CREATE_TABLE);
   }
   
-  getSearchRequests = () => {
-    return this.entries;
+  getSearchRequests = async () => {
+    let results;
+    try {
+      results = await this.pool.query(
+        `select * from entries order by createdAt desc limit ${ENTRY_SIZE_LIMIT};`
+      );
+    } catch(err) {
+      throw err;
+    }
+    return results.rows.map( el => {
+      el.createdAt = el.createdat;
+      delete el.createdat;
+      return el;
+    });
+  }
+  
+  postSearchRequest = async ({origin, destination, distance}) => {
+    try {
+      if (!origin || !destination || !distance) {
+        return {success: false, message: "At least one parameter is undefined"};
+      }
+      const id = uuidv4();
+      const createdAt = moment().format('YYYY-MM-DD hh:mm:ss');
+      const results = this.pool.query(`
+        INSERT INTO entries(id, origin, destination, distance, createdAt)
+        VALUES ('${id}', '${origin}','${destination}', ${distance}, '${createdAt}');
+      `);
+      return JSON.stringify(results);
+    } catch(err) {
+      return {success:false, message: err.message}
+    }
   }
   
 }
 
 module.exports = {
   db: new DataBase()
-}
+};

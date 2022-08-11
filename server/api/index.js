@@ -9,12 +9,20 @@ app.use(express.json());
 app.use(cors());
 
 app.get('/', (req, res) => {
+  res.setHeader(
+    'Access-Control-Allow-Origin',
+    'https://micc-delivery-challenge-client.herokuapp.com/'
+  );
   res.send('<b>Delivery System</b> Api here...');
 });
 
-app.get('/entries', (req, res) => {
-  const entries = controller.handleGetEntriesRequest();
+app.get('/entries', async (req, res) => {
+  const entries = await controller.handleGetEntriesRequest();
   console.info("[GET] /entries: Getting all entries");
+  res.setHeader(
+    'Access-Control-Allow-Origin',
+    '*'
+  );
   res.setHeader('Content-Type', 'application/json');
   res.end(JSON.stringify(
     entries
@@ -29,6 +37,10 @@ app.post('/distance-request', async (req, res) => {
   console.info(`[POST] /distance-request: Searching for request from ${
     origin
   } to ${destination}`);
+  res.setHeader(
+    'Access-Control-Allow-Origin',
+    '*'
+  );
   res.setHeader('Content-Type', 'application/json');
   res.end(JSON.stringify(
     payload
