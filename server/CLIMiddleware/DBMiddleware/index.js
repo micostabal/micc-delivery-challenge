@@ -1,7 +1,6 @@
 const { v4: uuidv4 } = require('uuid');
 const { Pool } = require('pg');
 const moment = require('moment');
-const bodyParser = require('body-parser');
 const {queries} = require("./utils");
 const ENTRY_SIZE_LIMIT = 200;
 
@@ -14,7 +13,6 @@ class DataBase {
       }
     });
     this.pool.connect();
-    this.pool.query(queries.DELETE_ALL_RECORDS);
   }
   
   createTable = async () => {
@@ -59,3 +57,4 @@ class DataBase {
 module.exports = {
   db: new DataBase()
 };
+
