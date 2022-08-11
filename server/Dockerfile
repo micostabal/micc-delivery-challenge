@@ -7,4 +7,7 @@ COPY package-lock.json /srv/app/micc-delivery-challenge-server/
 RUN npm install --production
 COPY . /srv/app/micc-delivery-challenge-server
 
-CMD [ "node", "server.js" ]
+EXPOSE 3001
+EXPOSE $PORT
+
+CMD [ "node", "server.js"]

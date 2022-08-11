@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import { DataGrid } from '@mui/x-data-grid';
 import renderCellExpand from "./CellRenderer";
+import config from "../../config";
 
 const SCHEMA = [
   {
@@ -34,7 +35,7 @@ const HistoricalResults = () => {
   
   useEffect( () => {
     fetch(
-      'http://localhost:3001/entries'
+      config.endpoints.ENTRIES
     )
     .then( response => response.json())
     .then( data => {

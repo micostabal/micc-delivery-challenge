@@ -4,7 +4,12 @@ RUN mkdir -p /srv/app/micc-delivery-challenge-client
 WORKDIR /srv/app/micc-delivery-challenge-client
 COPY package.json /srv/app/micc-delivery-challenge-client
 COPY package-lock.json /srv/app/micc-delivery-challenge-client
-RUN npm install --production
 COPY . /srv/app/micc-delivery-challenge-client
+RUN npm install --production
+RUN npm install -g serve
+RUN npm run build
 
-CMD [ "npm", "start" ]
+EXPOSE 3000
+EXPOSE $PORT
+
+CMD [ "serve", "-s", "build" ]

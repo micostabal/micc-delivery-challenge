@@ -7,6 +7,7 @@ import {
   InputGroup,
 } from '@blueprintjs/core';
 import "./MainPage.css";
+import config from "../../config";
 
 
 const MainPage = () => {
@@ -20,7 +21,7 @@ const MainPage = () => {
     setIsLoadingResults(true);
 
     const promiseResponse = await fetch(
-      'http://localhost:3001/distance-request',
+      config.endpoints.DISTANCE_REQUEST,
       {
         method: "POST",
         body: JSON.stringify({
@@ -43,8 +44,7 @@ const MainPage = () => {
     const newResults = [];
     if (success) {
       newResults.push(<p key="success">
-        The distance between <b>{originInput}</b> and
-        <b>{destinationInput}</b> is {distance} kilometers.
+        The distance between <b>{originInput}</b> and <b>{destinationInput}</b> is {distance} kilometers.
       </p>)
     } else {
       if (originLength !== 1 ) {

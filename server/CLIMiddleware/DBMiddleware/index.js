@@ -17,7 +17,7 @@ class DataBase {
     if (this.entries.length >= this.max_entries) {
       this.entries.shift();
     }
-    this.entries.push(
+    this.entries.unshift(
       {id,createdAt,origin,destination,distance}
     );
     return {success:true, message: "Ok"}
